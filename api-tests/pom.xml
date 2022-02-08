@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -204,42 +205,42 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>reserve-app-port</id>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>reserve-network-port</goal>
-                        </goals>
-                        <configuration>
-                            <randomPort>${randomizePorts}</randomPort>
-                            <minPortNumber>8080</minPortNumber>
-                            <maxPortNumber>9999</maxPortNumber>
-                            <portNames>
-                                <portName>random.external.app.port</portName>
-                            </portNames>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>reserve-db-port</id>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>reserve-network-port</goal>
-                        </goals>
-                        <configuration>
-                            <randomPort>${randomizePorts}</randomPort>
-                            <minPortNumber>5432</minPortNumber>
-                            <maxPortNumber>7000</maxPortNumber>
-                            <portNames>
-                                <portName>random.external.db.port</portName>
-                            </portNames>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.codehaus.mojo</groupId>-->
+<!--                <artifactId>build-helper-maven-plugin</artifactId>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>reserve-app-port</id>-->
+<!--                        <phase>initialize</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>reserve-network-port</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <randomPort>${randomizePorts}</randomPort>-->
+<!--                            <minPortNumber>8080</minPortNumber>-->
+<!--                            <maxPortNumber>9999</maxPortNumber>-->
+<!--                            <portNames>-->
+<!--                                <portName>random.external.app.port</portName>-->
+<!--                            </portNames>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                    <execution>-->
+<!--                        <id>reserve-db-port</id>-->
+<!--                        <phase>initialize</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>reserve-network-port</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <randomPort>${randomizePorts}</randomPort>-->
+<!--                            <minPortNumber>5432</minPortNumber>-->
+<!--                            <maxPortNumber>7000</maxPortNumber>-->
+<!--                            <portNames>-->
+<!--                                <portName>random.external.db.port</portName>-->
+<!--                            </portNames>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
             <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
@@ -352,42 +353,42 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <configuration>
-                    <trimStackTrace>false</trimStackTrace>
-                    <runOrder>alphabetical</runOrder>
-                    <includes>
-                        <include>**/*Test.java</include>
-                    </includes>
-                    <systemPropertyVariables>
-                        <blog.application.url>${tests.app.url}</blog.application.url>
-                        <blog.application.admin.username>${tests.app.admin.username}</blog.application.admin.username>
-                        <blog.application.admin.password>${tests.app.admin.password}</blog.application.admin.password>
-                        <verbose.tests.logging>${tests.verbose.logging}</verbose.tests.logging>
-                    </systemPropertyVariables>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>execute-integration-tests</id>
-                        <goals>
-                            <goal>integration-test</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>verify-integration-tests</id>
-                        <goals>
-                            <goal>verify</goal>
-                        </goals>
-                        <configuration>
-                            <summaryFiles>
-                                <summaryFile>${project.build.directory}/failsafe-reports/failsafe-summary.xml</summaryFile>
-                            </summaryFiles>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-failsafe-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <trimStackTrace>false</trimStackTrace>-->
+<!--                    <runOrder>alphabetical</runOrder>-->
+<!--                    <includes>-->
+<!--                        <include>**/*Test.java</include>-->
+<!--                    </includes>-->
+<!--                    <systemPropertyVariables>-->
+<!--                        <blog.application.url>${tests.app.url}</blog.application.url>-->
+<!--                        <blog.application.admin.username>${tests.app.admin.username}</blog.application.admin.username>-->
+<!--                        <blog.application.admin.password>${tests.app.admin.password}</blog.application.admin.password>-->
+<!--                        <verbose.tests.logging>${tests.verbose.logging}</verbose.tests.logging>-->
+<!--                    </systemPropertyVariables>-->
+<!--                </configuration>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>execute-integration-tests</id>-->
+<!--                        <goals>-->
+<!--                            <goal>integration-test</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                    <execution>-->
+<!--                        <id>verify-integration-tests</id>-->
+<!--                        <goals>-->
+<!--                            <goal>verify</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <summaryFiles>-->
+<!--                                <summaryFile>${project.build.directory}/failsafe-reports/failsafe-summary.xml</summaryFile>-->
+<!--                            </summaryFiles>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 </project>
