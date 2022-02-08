@@ -2,7 +2,6 @@ package com.softserve.controllers;
 
 import com.softserve.model.Role;
 import com.softserve.model.User;
-import com.softserve.service.RoleService;
 import com.softserve.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +20,7 @@ public class UserController {
     @PostMapping("/")
     public User createUser(@RequestBody User userBody) {
 //        userBody.setRole(new Role("blogger"));
-        return userService.create(userBody) ;
+        return userService.create(userBody);
     }
 
     @GetMapping("/")
@@ -36,7 +35,6 @@ public class UserController {
 
     @PutMapping("/{id}")
     public User updateUser(@PathVariable int id, @RequestBody User user) {
-        userService.readById(id);
         return userService.update(user);
     }
 
