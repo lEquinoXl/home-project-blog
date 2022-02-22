@@ -1,5 +1,7 @@
 package com.softserve.controllers;
 
+import com.softserve.annotations.MinimumAuthorityBlogger;
+import com.softserve.annotations.MinimumAuthorityModerator;
 import com.softserve.model.Comment;
 import com.softserve.model.Post;
 import com.softserve.service.CommentService;
@@ -22,6 +24,7 @@ public class PostController {
     }
 
     @PostMapping("/")
+    @MinimumAuthorityBlogger
     public Post createPost(@RequestBody Post post) {
         return postService.create(post);
     }
@@ -32,45 +35,50 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public Post getPost(@PathVariable int id){
+    public Post getPost(@PathVariable int id) {
         return postService.readById(id);
     }
 
     @PutMapping("/{id}")
-    public Post updatePost(@PathVariable int id, @RequestBody Post post){
+    @MinimumAuthorityModerator
+    public Post updatePost(@PathVariable int id, @RequestBody Post post) {
         return postService.update(post);
     }
 
     @DeleteMapping("/{id}")
-    public void removePost(@PathVariable int id){
+    @MinimumAuthorityModerator
+    public void removePost(@PathVariable int id) {
         postService.delete(id);
     }
 
-    @GetMapping("/{id}/comments")
-    public List<Comment> getComments(@PathVariable int id){
-        return commentService.getAll()
-                .stream().filter(x-> x.getPost().getId() == id)
-                .collect(Collectors.toList());
-    }
-
     @PostMapping("/{id}/comments")
-    public Comment createComment(@PathVariable int id, @RequestBody Comment comment){
+    @MinimumAuthorityBlogger
+    public Comment createComment(@PathVariable int id, @RequestBody Comment comment) {
         comment.setPost(postService.readById(id));
         return commentService.create(comment);
     }
 
+    @GetMapping("/{id}/comments")
+    public List<Comment> getComments(@PathVariable int id) {
+        return commentService.getAll()
+                .stream().filter(x -> x.getPost().getId() == id)
+                .collect(Collectors.toList());
+    }
+
     @GetMapping("/{postId}/comments/{id}")
-    public Comment getComment(@PathVariable int id){
+    public Comment getComment(@PathVariable int id) {
         return commentService.readById(id);
     }
 
     @PutMapping("/{postId}/comments/{id}")
-    public Comment updateComment(@PathVariable int id, @PathVariable int postId, @RequestBody Comment comment){
+    @MinimumAuthorityModerator
+    public Comment updateComment(@PathVariable int id, @PathVariable int postId, @RequestBody Comment comment) {
         return commentService.update(comment);
     }
 
     @DeleteMapping("/{postId}/comments/{id}")
-    public void removeComment(@PathVariable int id){
+    @MinimumAuthorityModerator
+    public void removeComment(@PathVariable int id) {
         commentService.delete(id);
     }
 }

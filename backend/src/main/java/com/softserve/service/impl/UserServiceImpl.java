@@ -4,6 +4,8 @@ import com.softserve.exception.NullEntityReferenceException;
 import com.softserve.model.User;
 import com.softserve.repository.UserRepository;
 import com.softserve.service.UserService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -13,6 +15,7 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
+
 
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -33,6 +36,13 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(
                         () -> new EntityNotFoundException("User with id " + id + " not found")
                 );
+    }
+
+    @Override
+    public User readByUserName(String username){
+        return userRepository.getUserByName(username).orElseThrow(
+                () -> new UsernameNotFoundException("User with username " + username + " not found")
+        );
     }
 
     @Override

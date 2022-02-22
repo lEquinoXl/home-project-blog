@@ -55,6 +55,6 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> getPostByAuthor(int authorsId) {
-        return null;
+        return postRepository.getPostByAuthorId(authorsId);
     }
 }

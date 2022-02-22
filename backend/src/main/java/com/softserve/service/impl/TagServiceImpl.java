@@ -4,11 +4,13 @@ import com.softserve.exception.NullEntityReferenceException;
 import com.softserve.model.Tag;
 import com.softserve.repository.TagRepository;
 import com.softserve.service.TagService;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class TagServiceImpl implements TagService {
 
     private TagRepository tagRepository;

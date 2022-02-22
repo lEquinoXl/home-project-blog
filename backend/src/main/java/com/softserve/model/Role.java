@@ -6,7 +6,9 @@ import javax.persistence.*;
 import java.util.Locale;
 
 @Getter
-public class Role{
+@Entity
+@Table(name = "roles")
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +26,14 @@ public class Role{
     }
 
     public Role() {
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
 
