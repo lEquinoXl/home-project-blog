@@ -9,7 +9,6 @@ import com.softserve.service.PostService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/posts")
@@ -30,8 +29,14 @@ public class PostController {
     }
 
     @GetMapping("/")
-    public List<Post> getPosts() {
-        return postService.getAll();
+    public List<Post> getPosts(@RequestParam(required = false, defaultValue = "0") int id,
+                               @RequestParam(required = false, defaultValue = "0") int tag_id,
+                               @RequestParam(required = false) String tag_name,
+                               @RequestParam(required = false) String authors_name,
+                               @RequestParam(defaultValue = "id") String posts_sort,
+                               @RequestParam(defaultValue = "0") int pageNum,
+                               @RequestParam(defaultValue = "10") int pageSize) {
+        return postService.getAll(id, tag_id, tag_name, authors_name, posts_sort, pageNum, pageSize);
     }
 
     @GetMapping("/{id}")
@@ -58,11 +63,15 @@ public class PostController {
         return commentService.create(comment);
     }
 
-    @GetMapping("/{id}/comments")
-    public List<Comment> getComments(@PathVariable int id) {
-        return commentService.getAll()
-                .stream().filter(x -> x.getPost().getId() == id)
-                .collect(Collectors.toList());
+    @GetMapping("/{post_id}/comments")
+    public List<Comment> getComments(@PathVariable int post_id,
+                                     @RequestParam(required = false) int id,
+                                     @RequestParam(required = false) String authors_name,
+                                     @RequestParam(defaultValue = "id") String comments_sort,
+                                     @RequestParam(defaultValue = "0") int pageNum,
+                                     @RequestParam(defaultValue = "10") int pageSize) {
+
+        return commentService.getAll(id, authors_name, comments_sort, pageNum, pageSize);
     }
 
     @GetMapping("/{postId}/comments/{id}")

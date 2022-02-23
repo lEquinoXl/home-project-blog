@@ -4,6 +4,9 @@ import com.softserve.exception.NullEntityReferenceException;
 import com.softserve.model.Tag;
 import com.softserve.repository.TagRepository;
 import com.softserve.service.TagService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -32,7 +35,7 @@ public class TagServiceImpl implements TagService {
         return tagRepository
                 .findById(id)
                 .orElseThrow(
-                        () -> new EntityNotFoundException("User with id " + id + " not found")
+                        () -> new EntityNotFoundException("Tag with id " + id + " not found")
                 );
     }
 
@@ -44,8 +47,15 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public List<Tag> getAll() {
-        List<Tag> tags = tagRepository.findAll();
-        return tags.isEmpty()? new ArrayList<>() : tags;
+    public List<Tag> getAll(int id, String name, String sort, int num, int size) {
+        Pageable pageable = PageRequest.of(num, size, Sort.by(sort).ascending());
+        if (id > 0) {
+            return List.of(readById(id));
+        }
+        if (name != null && !name.isEmpty()) {
+            return tagRepository.getTagsByName(name, pageable).toList();
+        }
+        List<Tag> tags = tagRepository.findAll(pageable).toList();
+        return tags.isEmpty() ? new ArrayList<>() : tags;
     }
 }

@@ -4,8 +4,10 @@ import com.softserve.exception.NullEntityReferenceException;
 import com.softserve.model.User;
 import com.softserve.repository.UserRepository;
 import com.softserve.service.UserService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -39,7 +41,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User readByUserName(String username){
+    public User readByUserName(String username) {
         return userRepository.getUserByName(username).orElseThrow(
                 () -> new UsernameNotFoundException("User with username " + username + " not found")
         );
@@ -61,8 +63,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAll() {
-        List<User> users = userRepository.findAll();
+    public List<User> getAll(int id, String name, String sort, int num, int size) {
+        Pageable pageable = PageRequest.of(num, size, Sort.by(sort).ascending());
+        if (id > 0) {
+            return List.of(readById(id));
+        }
+        if (name != null && !name.isEmpty()) {
+            return userRepository.getUsersByName(name, pageable).toList();
+        }
+        List<User> users = userRepository.findAll(pageable).toList();
         return users.isEmpty() ? new ArrayList<>() : users;
     }
 }

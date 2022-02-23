@@ -9,5 +9,5 @@ public interface CommentService {
     Comment readById(int id);
     Comment update(Comment comment);
     void delete(int id);
-    List<Comment> getAll();
+    List<Comment> getAll(int id, String name, String sort, int pageNum, int pageSize);
 }

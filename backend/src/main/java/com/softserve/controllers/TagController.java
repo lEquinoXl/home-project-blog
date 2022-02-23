@@ -25,12 +25,12 @@ public class TagController {
     }
 
     @GetMapping("/")
-    public List<Tag> getTags(@RequestParam(required = false) int id,
+    public List<Tag> getTags(@RequestParam(required = false, defaultValue = "0") int id,
                              @RequestParam(required = false) String name,
-                             @RequestParam(defaultValue = "-id") String sort,
-                             @RequestParam(defaultValue = "0") Integer pageNum,
-                             @RequestParam(defaultValue = "10") Integer pageSize) {
-        return tagService.getAll();
+                             @RequestParam(defaultValue = "id") String sort,
+                             @RequestParam(defaultValue = "0") int pageNum,
+                             @RequestParam(defaultValue = "10") int pageSize) {
+        return tagService.getAll(id, name, sort, pageNum, pageSize);
     }
 
     @GetMapping("/{id}")

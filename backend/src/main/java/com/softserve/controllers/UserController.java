@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/users")
@@ -43,8 +42,12 @@ public class UserController {
 
     @GetMapping("/")
     @OnlyAdmin
-    public List<User> getUsers() {
-        return userService.getAll();
+    public List<User> getUsers(@RequestParam(required = false, defaultValue = "0") int id,
+                               @RequestParam(required = false) String name,
+                               @RequestParam(defaultValue = "id") String sort,
+                               @RequestParam(defaultValue = "0") int pageNum,
+                               @RequestParam(defaultValue = "10") int pageSize) {
+        return userService.getAll(id, name, sort, pageNum, pageSize);
     }
 
     @GetMapping("/{id}")
@@ -97,7 +100,7 @@ public class UserController {
     @MinimumAuthorityBlogger
     public User updateCurrentUserPassword(Authentication authentication, @RequestBody ChangePassword changePassword) {
         User user = userService.readByUserName(authentication.getName());
-        if(user.getPassword() == encoder.encode(changePassword.getOldPassword()))
+        if (user.getPassword() == encoder.encode(changePassword.getOldPassword()))
             user.setPassword(encoder.encode(changePassword.getNewPassword()));
         return userService.update(user);
     }
@@ -130,8 +133,13 @@ public class UserController {
 
     @GetMapping("/current/comments")
     @MinimumAuthorityBlogger
-    public List<Comment> getCommentsByCurrentUser(Authentication authentication) {
-        return commentService.getAll().stream().filter(c -> c.getAuthor().getId() == userService.readByUserName(authentication.getName()).getId()).collect(Collectors.toList());
+    public List<Comment> getCommentsByCurrentUser(Authentication authentication,
+                                                  @RequestParam(required = false, defaultValue = "0") int id,
+                                                  @RequestParam(defaultValue = "id") String comments_sort,
+                                                  @RequestParam(defaultValue = "0") int pageNum,
+                                                  @RequestParam(defaultValue = "10") int pageSize
+    ) {
+        return commentService.getAll(id, authentication.getName(), comments_sort, pageNum, pageSize);
     }
 
     @GetMapping("/current/comments/{id}")

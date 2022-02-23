@@ -9,5 +9,5 @@ public interface UserService {
     User readByUserName(String username);
     User update(User user);
     void delete(int id);
-    List<User> getAll();
+    List<User> getAll(int id, String name, String sort, int num, int size);
 }
